@@ -2,7 +2,7 @@
     "name": "compredict/users-sdk",
     "type": "library",
     "description": "Enables PHP applications to create/modify users.",
-    "version": "0.0.1-beta",
+    "version": "0.0.2-beta",
     "keywords": ["api", "rest", "compredict", "AI", "sdk"],
     "homepage": "https://compredict.de",
     "license": "MIT",
