@@ -44,6 +44,16 @@ class User extends Resource
         return $this;
     }
 
+    public function fresh()
+    {
+        if (!isset($this->APIKey)) {
+            throw new Exception("User is not logged in");
+        }
+
+        $user = $this->client->getUser($this->APIKey);
+        return $user;
+    }
+
     public static function login($username, $password, $email = "")
     {
         $client = Client::getInstance();
