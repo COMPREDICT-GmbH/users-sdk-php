@@ -189,7 +189,7 @@ class Client
 
     public function getUser($api)
     {
-        $response = $this->http->GET("/users", $api);
+        $response = $this->http->GET("/user", $api);
         return new User($api, $response);
     }
 
@@ -218,6 +218,26 @@ class Client
         }
 
         return new User($response->key, $response->user);
+    }
+
+    public function getUsersById($ids = array())
+    {
+        if (is_null($this->adminKey) || trim($this->adminKey) == "") {
+            throw new Exception("Only admin can register user!, please provide an Admin Token Key");
+        }
+
+        $ids = implode(',', $ids);
+
+        $response = $this->http->GET("/users/?ids={$ids}", $this->adminKey);
+        if ($response === false || is_string($response)) {
+            return false;
+        }
+
+        $users = [];
+        foreach ($response as $user) {
+            array_push($users, new User(null, $response));
+        }
+        return $users;
     }
 
     public function canRegister()

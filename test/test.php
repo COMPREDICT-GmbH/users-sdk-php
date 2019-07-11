@@ -1,22 +1,21 @@
 <?php
 namespace Compredict\Test;
+
 include 'autoloader.php';
 
-use \Compredict\API\Users\Resources\Task as Task;
 use \Compredict\API\Users\Client as Compredict;
-use \Compredict\API\Users\Resources\User as User;
 use \Dotenv\Dotenv;
 
 $dotenv = new Dotenv(__DIR__ . '\..');
 $dotenv->load();
 
-$token= getenv("COMPREDICT_USERS_ADMIN_KEY", null);
-$failOnError= getenv("COMPREDICT_USERS_FAIL_ON_ERROR", true);
-
+$token = getenv("COMPREDICT_USERS_ADMIN_KEY", null);
+$failOnError = getenv("COMPREDICT_USERS_FAIL_ON_ERROR", true);
 
 $client = Compredict::getInstance($token);
-$client->failOnError(false);
-
+$client->failOnError(true);
+$users = $client->getUsersById([2, 4]);
+var_dump($users);
 
 // login user
 // $user = User::login(...);
