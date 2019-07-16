@@ -204,7 +204,7 @@ class Client
     }
 
     public function registerUser($username, $email, $password1, $password2, $organization,
-        $first_name = null, $last_name = null, $phone_number = null) {
+                                 $first_name = null, $last_name = null, $phone_number = null, $withVerification = true) {
         if (is_null($this->adminKey) || trim($this->adminKey) == "") {
             throw new Exception("Only admin can register user!, please provide an Admin Token Key");
         }
@@ -213,11 +213,12 @@ class Client
             "organization" => $organization, "first_name" => $first_name, "last_name" => $last_name,
             "phone_number" => $phone_number];
         $response = $this->http->POST('/users/register', $required_fields, $this->adminKey);
+
         if ($response === false || is_string($response)) {
             return false;
         }
 
-        return new User($response->key, $response->user);
+        return $withVerification ? $response->detail : new User($response->key, $response->user);
     }
 
     public function getUsersById($ids = array())
