@@ -190,6 +190,10 @@ class Client
     public function getUser($api)
     {
         $response = $this->http->GET("/user", $api);
+        if ($response === false || is_string($response)) {
+            return false;
+        }
+
         return new User($api, $response);
     }
 
@@ -204,7 +208,7 @@ class Client
     }
 
     public function registerUser($username, $email, $password1, $password2, $organization,
-                                 $first_name = null, $last_name = null, $phone_number = null, $withVerification = true) {
+        $first_name = null, $last_name = null, $phone_number = null, $withVerification = true) {
         if (is_null($this->adminKey) || trim($this->adminKey) == "") {
             throw new Exception("Only admin can register user!, please provide an Admin Token Key");
         }
