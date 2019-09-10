@@ -38,7 +38,7 @@ class Request {
     * @var string
     **/
     private $requestType;
-    
+
     /**
     * The data in json format.
     *
@@ -59,56 +59,56 @@ class Request {
     * @var int
     **/
     private $latency;
-    
+
     /**
     * Response body.
     *
     * @var std class
     **/
     private $responseBody;
-    
+
     /**
     * Response header
     *
     * @var array
     **/
     private $responseHeader;
-    
+
     /**
     * http status code.
     *
     * @var int
     **/
     private $httpCode;
-    
+
     /**
     * Curl error.
     *
     * @var string
     **/
     private $error;
-    
+
     /**
     * Base url to the server.
     *
     * @var string
     **/
     private $url;
-    
+
     /**
     * Curl isntance.
     *
     * @var curl
     **/
     private $ch;
-    
+
     /**
     * Last error from the server.
     *
     * @var Std class
     **/
     private $lastError;
-     
+
     /**
     * Determine whether to throw error or store the error in $lastError.
     *
@@ -258,7 +258,7 @@ class Request {
     public function setPostFields($fields = array()) {
         if(is_array($fields) || is_object($fields))
             $fields = json_encode($fields);
-        $this->postFields = $fields;       
+        $this->postFields = $fields;
     }
 
     /**
@@ -336,7 +336,7 @@ class Request {
 
     /**
     * Pipeline for POST request.
-    *  
+    *
     * @param string $endpoint completes the url.
     * @param string $data json encoded.
     * @param array|null $files
@@ -351,7 +351,7 @@ class Request {
 
     /**
     * Pipeline for POST request.
-    *  
+    *
     * @param string $endpoint completes the url.
     * @param string $data json encoded.
     * @param array|null $files
@@ -366,7 +366,7 @@ class Request {
 
     /**
     * Pipeline for GET request.
-    *  
+    *
     * @param string $endpoint completes the url.
     * @return std class|false the result from the endpoint
     **/
@@ -436,6 +436,7 @@ class Request {
         $this->responseBody = json_decode(substr($response, $header_size));
         $this->error = $error;
         $this->httpCode = $http_code;
+        $this->headers = [];
 
         // Convert the latency to ms.
         $this->latency = round($time * 1000);
@@ -453,7 +454,7 @@ class Request {
         if (curl_errno($this->ch)) {
             throw new NetworkError(curl_error($this->ch), curl_errno($this->ch));
         }
-        
+
         if ($this->httpCode >= 400 && $this->httpCode <= 499) {
             if ($this->failOnError) {
                 throw new ClientError($this->responseBody, $this->httpCode);
