@@ -157,7 +157,7 @@ class Client
         }
 
         $baseResource = __NAMESPACE__ . '\\' . $resource;
-        $class = (class_exists($baseResource)) ? $baseResource : 'Compredict\\API\\Resources\\' . $resource;
+        $class = (class_exists($baseResource)) ? $baseResource : 'Compredict\\API\\Users\\Resources\\' . $resource;
         return new $class($object);
     }
 
@@ -175,10 +175,10 @@ class Client
         }
 
         $baseResource = __NAMESPACE__ . '\\' . $resource;
-        $resource_class = (class_exists($baseResource)) ? $baseResource : 'Compredict\\API\\Resources\\' . $resource;
+        $resource_class = (class_exists($baseResource)) ? $baseResource : 'Compredict\\API\\Users\\Resources\\' . $resource;
         $array_of_resources = array();
         foreach ($object as $res) {
-            array_push($array_of_resources, new $resource_class($object));
+            array_push($array_of_resources, new $resource_class($res));
         }
         return $array_of_resources;
     }
@@ -241,6 +241,21 @@ class Client
         }
 
         return $withVerification ? $response->detail : new User($response->key, $response->user);
+    }
+
+    public function getOrganizations()
+    {
+        if (is_null($this->adminKey) || trim($this->adminKey) == "") {
+            throw new Exception("Only admin can get organizations!, please provide an Admin Token Key");
+        }
+
+        $response = $this->http->GET('/organizations', $this->adminKey);
+
+        if ($response === false || is_string($response)) {
+            return false;
+        }
+
+        return $this->mapCollection('Organization', $response);
     }
 
     public function getUsersById($ids = array())
