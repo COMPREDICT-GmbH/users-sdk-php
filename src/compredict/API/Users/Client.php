@@ -273,7 +273,7 @@ class Client
 
         $users = [];
         foreach ($response as $user) {
-            array_push($users, new User(null, $user));
+	        array_push($users, new User($user->token, $user));
         }
         return $users;
     }
