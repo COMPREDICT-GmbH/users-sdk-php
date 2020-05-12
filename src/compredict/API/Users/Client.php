@@ -39,7 +39,7 @@ class Client
 
     private function __construct($adminKey = null)
     {
-        $this->http = new Request($this->baseURL . $this->APIVersion);
+	    $this->http = new Request(\Config::get('compredict.ai_core.server_url') . $this->APIVersion);
         $this->adminKey = $adminKey;
     }
 
