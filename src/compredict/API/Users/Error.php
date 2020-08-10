@@ -17,7 +17,7 @@ class Error extends \Exception
         } elseif (is_string($response)) {
             $message = $response;
         } else {
-            $message = 'Something went wrong please try again!';
+	        $message = 'Something went wrong please try again!, please check if ai core is up and online.';
         }
 
         parent::__construct($message, $code);
