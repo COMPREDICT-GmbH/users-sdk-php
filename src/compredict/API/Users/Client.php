@@ -217,7 +217,7 @@ class Client
 
     public function updateUser($api, $updatedFields)
     {
-        $response = $this->http->PUT('/users/', $updatedFields, $api);
+        $response = $this->http->PUT('/user/', $updatedFields, $api);
         if ($response === false || is_string($response)) {
             return false;
         }
